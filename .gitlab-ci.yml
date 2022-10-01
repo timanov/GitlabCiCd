@@ -20,11 +20,21 @@ build:
             - build/
     allow_failure: true
 
-testing:
+testing-for-test:
     stage: test
     tags:
         - test
     script:
+        - echo 'Енто testing for test'
+        - sudo bash build/installWEB.sh
+        - sudo cp index.html /var/www/html/index.html
+
+testing-for-stage:
+    stage: test
+    tags:
+        - test
+    script:
+        - echo 'Енто testing for stage'
         - sudo bash build/installWEB.sh
         - sudo cp index.html /var/www/html/index.html
 
