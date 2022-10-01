@@ -1,0 +1,38 @@
+stages:
+    - build
+    - test
+    - stage
+
+build:
+    stage: build
+    image: ubuntu:20.04
+    tags:
+        - gitlab
+    script:
+        - mkdir build
+        - cp installWEB.sh build/
+        - cd build
+        - echo 'echo "Privet GitLab"' >> installWEB.sh
+        - echo 'sudo apt install apache2 -y' >> installWEB.sh
+        - cat installWEB.sh
+    artifacts:
+        paths:
+            - build/
+    allow_failure: true
+
+testing:
+    stage: test
+    tags:
+        - test
+    script:
+        - sudo bash build/installWEB.sh
+        - sudo cp index.html /var/www/html/index.html
+
+staging:
+    stage: stage
+    tags:
+        - stage
+    script:
+        - sudo bash build/installWEB.sh
+        - sudo cp index.html /var/www/html/index.html
+    when: manual
